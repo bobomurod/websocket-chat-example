@@ -19,7 +19,12 @@
       
       ws.onmessage = (message) => {
         console.log(message) 
-        chatEl.innerText= JSON.stringify(message.data)
+        const messages = JSON.parse(message.data);
+        messages.forEach(val=>{
+          const messageEl = document.createElement('div');
+          messageEl.appendChild(document.createTextNode(`${val.name} ${val.message}`));
+          chat.appendChild(messageEl);
+        })
       }
 
       const send = (event) => { event.preventDefault(); const name = document.getElementById("name").value;
