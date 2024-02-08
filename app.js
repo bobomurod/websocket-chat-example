@@ -1,5 +1,6 @@
 import { WebSocketServer } from 'ws';
 import {v4 as uuid} from 'uuid';
+import { writeFile } from 'fs';
 const clients = {};
 const messages = [];
 const wss = new WebSocketServer({port: 8000})
@@ -11,7 +12,7 @@ wss.on("connection", (ws) => {
     const {name, message} = JSON.parse(rawMessage.toString('utf-8'));
     messages.push({name, message});
     for (const id in clients) {
-      clients[id].send(JSON.stringify({name, messages}))
+      clients[id].send(JSON.stringify([{name, message}]))
     }
   });
   ws.on("close", () => {
@@ -19,3 +20,13 @@ wss.on("connection", (ws) => {
     console.log(`Client ${id} closed`);
   })
 });
+
+process.on('SIGINT', () => {
+  wss.close();
+  writeFile('log', JSON.stringify(messages), err => {
+    if (err) {
+      console.log(err)
+    }
+    process.exit();  
+  })
+})

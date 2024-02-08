@@ -19,8 +19,9 @@
       
       ws.onmessage = (message) => {
         console.log(message) 
-        const messages = JSON.parse(message.data);
-        messages.forEach(val=>{
+        const messages = JSON.parse(message.data.toString('utf-8'));
+        console.log(typeof(messages))
+        messages.forEach((val) => {
           const messageEl = document.createElement('div');
           messageEl.appendChild(document.createTextNode(`${val.name} ${val.message}`));
           chat.appendChild(messageEl);
