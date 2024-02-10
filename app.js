@@ -2,7 +2,7 @@ import { WebSocketServer } from 'ws';
 import {v4 as uuid} from 'uuid';
 import { writeFile , existsSync, readFileSync} from 'fs';
 const clients = {};
-const log = existsSync('log') && readFileSync('log')
+const log = existsSync('log') && readFileSync('log'):
 const messages = JSON.parse(log) || [];
 const wss = new WebSocketServer({port: 8000})
 wss.on("connection", (ws) => {
